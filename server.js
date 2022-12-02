@@ -20,6 +20,14 @@ var conn = mysql.createPool({
   // debug: true,
 });
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +38,7 @@ app.get('/', (req, res) => {
 
 app.get('/pull/:hshd', (req, res) => {
   const hshd = req.params.hshd;
+  console.log(`/pull/${hshd}`);
   const query =
     'SELECT * FROM data_pull WHERE Hshd_num = ? ORDER BY Basket_num, Date, Product_num, Department, Commodity;';
   conn.query(query, [hshd], (err, result) => {
