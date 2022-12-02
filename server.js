@@ -50,6 +50,42 @@ app.get('/pull/:hshd', (req, res) => {
   });
 });
 
+app.get('/dashboard/1', (req, res) => {
+  const query =
+    "SELECT Hshd_size, COUNT(Hshd_size) AS count FROM data_pull WHERE Hshd_size != 'null' GROUP BY Hshd_size;";
+  conn.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.json({ data: result });
+    }
+  });
+});
+
+app.get('/dashboard/2', (req, res) => {
+  const query =
+    'SELECT Children, COUNT(Children) AS count FROM data_pull GROUP BY Children;';
+  conn.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.json({ data: result });
+    }
+  });
+});
+
+app.get('/dashboard/3', (req, res) => {
+  const query =
+    "SELECT Income_range, COUNT(Income_range) AS count FROM data_pull WHERE Income_range != 'null' GROUP BY Income_range;";
+  conn.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.json({ data: result });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
 });
